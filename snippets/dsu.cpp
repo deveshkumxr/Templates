@@ -1,9 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
+
 class DSU
 {
 public:
     vector<int> rank, size, par;
+
     DSU(int n)
     {
         rank.resize(n + 1, 0);
@@ -12,15 +14,22 @@ public:
         for (int i = 0; i < n + 1; i++)
             par[i] = i;
     }
-    int find(int n)
+
+    int get_par(int i)
     {
-        if (par[n] == n)
-            return n;
-        return par[n] = find(par[n]);
+        if (par[i] == i)
+            return i;
+        return par[i] = get_par(par[i]);
     }
-    void rankUnion(int u, int v)
+
+    int get_size(int i)
     {
-        int pu = find(u), pv = find(v);
+        return size[get_par(i)];
+    }
+
+    void rank_union(int u, int v)
+    {
+        int pu = get_par(u), pv = get_par(v);
         if (pu == pv)
             return;
         if (rank[pu] > rank[pv])
@@ -30,9 +39,10 @@ public:
         else
             rank[pu]++, par[pv] = pu;
     }
-    void sizeUnion(int u, int v)
+
+    void size_union(int u, int v)
     {
-        int pu = find(u), pv = find(v);
+        int pu = get_par(u), pv = get_par(v);
         if (pu == pv)
             return;
         if (size[pu] >= size[pv])
@@ -40,8 +50,9 @@ public:
         else
             size[pv] += size[pu], par[pu] = pv;
     }
-    bool sameUnion(int u, int v)
+
+    bool same_union(int u, int v)
     {
-        return find(u) == find(v);
+        return get_par(u) == get_par(v);
     }
 };
