@@ -15,7 +15,7 @@ void add(int idx) {}
 
 ll get_answer() {}
 
-int block_size;
+const int block_size;
 
 struct Query
 {

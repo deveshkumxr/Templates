@@ -2,6 +2,8 @@
 
 using namespace std;
 using ll = long long;
+
+// 1--based
 template <class T>
 class Merge
 {
@@ -20,7 +22,7 @@ public:
         buildUtil(1, 1, n, v);
     }
 
-    ll query(int l, int r, q)
+    ll query(int l, int r, T q)
     {
         return queryUtil(1, 1, n, l, r, q);
     }
@@ -48,6 +50,7 @@ private:
         {
             return 0;
         }
+        // here
         if (ss >= l && se <= r)
         {
             return lower_bound(st[si].begin(), st[si].end(), q) - st[si].begin();
