@@ -5,11 +5,9 @@ using ll = long long;
 
 const int N = 2e5 + 4;
 
-// Range Min Queries
-
 ll st[4 * N + 4];
 
-// build st -- 1-based idx
+// build st -- 1-based indexing
 void build(int si, int ss, int se, vector<int> &arr)
 {
     if (ss == se)

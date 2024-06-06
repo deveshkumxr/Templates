@@ -2,77 +2,7 @@
 
 using namespace std;
 
-const int N = 100005;
-
-vector<int> g[N];
-int depth[N], dp[N][20];
-
-void dfs(int node, int parent, int d)
-{
-    depth[node] = d;
-    dp[node][0] = parent;
-    for (int k = 1; (1 << k) <= N; k++)
-    {
-        if (dp[node][k - 1] != -1)
-        {
-            dp[node][k] = dp[dp[node][k - 1]][k - 1];
-        }
-        else
-        {
-            break;
-        }
-    }
-    for (auto &child : g[node])
-    {
-        if (child != parent)
-        {
-            dfs(child, node, d + 1);
-        }
-    }
-}
-
-int LCA(int u, int v)
-{
-    if (depth[u] < depth[v])
-    {
-        swap(u, v);
-    }
-    for (int i = 19; i >= 0; i--)
-    {
-        if (depth[u] - (1 << i) >= depth[v])
-        {
-            u = dp[u][i];
-        }
-    }
-    if (u == v)
-    {
-        return u;
-    }
-    for (int i = 19; i >= 0; i--)
-    {
-        if (dp[u][i] != dp[v][i])
-        {
-            u = dp[u][i];
-            v = dp[v][i];
-        }
-    }
-    return dp[u][0];
-}
-
-int K(int node, int k)
-{
-    for (int i = 0; k > 0 && node != -1; i++)
-    {
-        if (k & 1)
-        {
-            node = dp[node][i];
-        }
-        k >>= 1;
-    }
-    return node;
-}
-
-// 0 based indexing of vertices
+// class based tree helper with 0-based indexing
 class Tree
 {
 public:
@@ -80,7 +10,7 @@ public:
     vector<vector<int>> adj;
 
     int timer;
-    vector<int> tin, tout, depth, flat;
+    vector<int> tin, tout, depth, flat, par;
     vector<vector<int>> up;
 
     Tree(int n)
@@ -89,6 +19,7 @@ public:
         tin.resize(n);
         tout.resize(n);
         depth.resize(n);
+        par.resize(n);
         flat.resize(2 * n);
         timer = 0;
         adj.resize(n);
@@ -112,6 +43,7 @@ public:
 
     void dfs(int v, int p)
     {
+        par[v] = p;
         flat[timer] = v;
         tin[v] = timer++;
         if (p != -1)
@@ -195,3 +127,75 @@ public:
         return get_kth_node_in_path(u, root, k);
     }
 };
+
+
+// normal function based
+
+const int N = 100005;
+vector<int> g[N];
+int depth[N], dp[N][20];
+
+void dfs(int node, int parent, int d)
+{
+    depth[node] = d;
+    dp[node][0] = parent;
+    for (int k = 1; (1 << k) <= N; k++)
+    {
+        if (dp[node][k - 1] != -1)
+        {
+            dp[node][k] = dp[dp[node][k - 1]][k - 1];
+        }
+        else
+        {
+            break;
+        }
+    }
+    for (auto &child : g[node])
+    {
+        if (child != parent)
+        {
+            dfs(child, node, d + 1);
+        }
+    }
+}
+
+int LCA(int u, int v)
+{
+    if (depth[u] < depth[v])
+    {
+        swap(u, v);
+    }
+    for (int i = 19; i >= 0; i--)
+    {
+        if (depth[u] - (1 << i) >= depth[v])
+        {
+            u = dp[u][i];
+        }
+    }
+    if (u == v)
+    {
+        return u;
+    }
+    for (int i = 19; i >= 0; i--)
+    {
+        if (dp[u][i] != dp[v][i])
+        {
+            u = dp[u][i];
+            v = dp[v][i];
+        }
+    }
+    return dp[u][0];
+}
+
+int K(int node, int k)
+{
+    for (int i = 0; k > 0 && node != -1; i++)
+    {
+        if (k & 1)
+        {
+            node = dp[node][i];
+        }
+        k >>= 1;
+    }
+    return node;
+}
