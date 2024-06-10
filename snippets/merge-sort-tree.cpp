@@ -24,7 +24,7 @@ public:
 
     ll query(int l, int r, T q)
     {
-        return queryUtil(1, 1, n, l, r, q);
+        return queryUtil(1, 1, n, l + 1, r + 1, q);
     }
 
 private:
