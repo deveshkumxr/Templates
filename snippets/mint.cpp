@@ -141,6 +141,13 @@ struct Factorials
             return 0;
         return f[n] * fi[k] * fi[n - k];
     }
+
+    Mint P(int n, int k)
+    {
+        if (k < 0 || k > n)
+            return 0;
+        return f[n] * fi[n - k];
+    }
 };
 
 template <unsigned int mod = M>
