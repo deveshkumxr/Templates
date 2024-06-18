@@ -1,6 +1,5 @@
 #include <bits/stdc++.h>
 using namespace std;
-using ll = long long;
 
 struct manacher
 {
@@ -42,9 +41,9 @@ struct manacher
         lp = initialise(t);
     }
 
-    ll count()
+    long long count()
     {
-        ll cnt = 0;
+        long long cnt = 0;
         for (int i = 1; i <= n; i++)
             cnt += lp[i] / 2;
         return cnt;

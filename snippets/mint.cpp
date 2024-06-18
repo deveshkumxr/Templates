@@ -10,7 +10,7 @@ struct mint
 
     mint() : x(0) {}
 
-    mint(ll _x)
+    mint(long long _x)
     {
         _x %= mod;
         if (_x < 0)
@@ -36,11 +36,11 @@ struct mint
 
     mint &operator*=(const mint &a)
     {
-        x = (ll)x * a.x % mod;
+        x = (long long)x * a.x % mod;
         return *this;
     }
 
-    mint pow(ll pw) const
+    mint pow(long long pw) const
     {
         mint res = 1;
         mint cur = *this;
@@ -62,7 +62,7 @@ struct mint
         while (t != 1)
         {
             unsigned int z = mod / t;
-            res = (ll)res * (mod - z) % mod;
+            res = (long long)res * (mod - z) % mod;
             t = mod - t * z;
         }
         return res;
@@ -213,7 +213,7 @@ struct Inverses
         while (t >= (int)ii.size())
         {
             unsigned int z = mod / t;
-            res = (ll)res * (mod - z) % mod;
+            res = (long long)res * (mod - z) % mod;
             t = mod - t * z;
         }
         return ii[t] * res;

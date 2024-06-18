@@ -1,20 +1,19 @@
 #include <bits/stdc++.h>
 using namespace std;
-#define ll long long
 
 const int N = 5e5 + 5;
 
-ll gcd(ll a, ll b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
-ll lcm(ll a, ll b) { return a * b / gcd(a, b); }
-ll exp(ll a, ll b, ll mod) {a %= mod; ll res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
-ll inv(ll a, ll b) {return exp(a, b - 2, b);}
-ll add(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
-ll mul(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
-ll sub(ll a, ll b, ll m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
-ll dvd(ll a, ll b, ll m) {a = a % m; b = b % m; return (mul(a, inv(b, m), m) + m) % m;}
+long long gcd(long long a, long long b) {if (b > a) {return gcd(b, a);} if (b == 0) {return a;} return gcd(b, a % b);}
+long long lcm(long long a, long long b) { return a * b / gcd(a, b); }
+long long exp(long long a, long long b, long long mod) {a %= mod; long long res = 1; while (b > 0) {if (b & 1)res = (res * a) % mod; a = (a * a) % mod; b = b >> 1;} return res;}
+long long inv(long long a, long long b) {return exp(a, b - 2, b);}
+long long add(long long a, long long b, long long m) {a = a % m; b = b % m; return (((a + b) % m) + m) % m;}
+long long mul(long long a, long long b, long long m) {a = a % m; b = b % m; return (((a * b) % m) + m) % m;}
+long long sub(long long a, long long b, long long m) {a = a % m; b = b % m; return (((a - b) % m) + m) % m;}
+long long dvd(long long a, long long b, long long m) {a = a % m; b = b % m; return (mul(a, inv(b, m), m) + m) % m;}
 
 mt19937 gen(chrono::steady_clock::now().time_since_epoch().count());
-const ll base = gen() % N + 32;
+const long long base = gen() % N + 32;
 
 // string hashing
 struct Hashing
@@ -22,10 +21,10 @@ struct Hashing
     string s;
     int n;
     int primes;
-    vector<ll> hash_primes = {1000000009, 100000007};
-    vector<vector<ll>> hash_values;
-    vector<vector<ll>> power_of_base;
-    vector<vector<ll>> inverse_power_of_base;
+    vector<long long> hash_primes = {1000000009, 100000007};
+    vector<vector<long long>> hash_values;
+    vector<vector<long long>> power_of_base;
+    vector<vector<long long>> inverse_power_of_base;
 
     Hashing(string a)
     {
@@ -57,13 +56,13 @@ struct Hashing
         }
     }
 
-    vector<ll> substring_hash(int l, int r)
+    vector<long long> substring_hash(int l, int r)
     {
-        vector<ll> hash(primes);
+        vector<long long> hash(primes);
         for (int i = 0; i < primes; i++)
         {
-            ll val1 = hash_values[i][r];
-            ll val2 = l > 0 ? hash_values[i][l - 1] : 0LL;
+            long long val1 = hash_values[i][r];
+            long long val2 = l > 0 ? hash_values[i][l - 1] : 0LL;
             hash[i] = mul(sub(val1, val2, hash_primes[i]), inverse_power_of_base[i][l], hash_primes[i]);
         }
         return hash;

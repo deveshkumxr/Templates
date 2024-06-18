@@ -1,11 +1,9 @@
 #include <bits/stdc++.h>
-
 using namespace std;
-using ll = long long;
 
 const int N = 2e5 + 4;
 
-ll st[4 * N + 4];
+long long st[4 * N + 4];
 
 // build st -- 1-based indexing
 void build(int si, int ss, int se, vector<int> &arr)
@@ -22,7 +20,7 @@ void build(int si, int ss, int se, vector<int> &arr)
 }
 
 // value for [l, r]
-ll query(int si, int ss, int se, int l, int r)
+long long query(int si, int ss, int se, int l, int r)
 {
     if (ss > r || se < l)
         return INT_MAX;
@@ -33,7 +31,7 @@ ll query(int si, int ss, int se, int l, int r)
 }
 
 // walk on st -- direct query
-ll query(int si, int ss, int se, int l, int r, ll x)
+long long query(int si, int ss, int se, int l, int r, long long x)
 {
     if (ss > r || se < l || st[si] > x)
         return INT_MAX;
@@ -51,7 +49,7 @@ ll query(int si, int ss, int se, int l, int r, ll x)
 }
 
 // point update for ind
-void update(int si, int ss, int se, int ind, ll val)
+void update(int si, int ss, int se, int ind, long long val)
 {
     if (ss == se)
         st[si] = val;

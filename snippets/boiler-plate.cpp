@@ -1,9 +1,8 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
-using ll = long long;
-using ld = long double;
+#pragma GCC optimize("O3,unroll-loops")
+#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 #ifndef ONLINE_JUDGE
 #include "debugger\debug.h"
@@ -11,15 +10,16 @@ using ld = long double;
 #define debug(...) 8
 #endif
 
+#define int long long
+
 void solve()
 {
     
 }
 
-int main()
+signed main()
 {
     cin.tie(0)->sync_with_stdio(0);
-    cout << fixed << setprecision(17);
     int T = 1;
     cin >> T;
     while (T--) solve();

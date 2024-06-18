@@ -1,19 +1,12 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
-#pragma GCC optimize("O3,unroll-loops")
-#pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt")
 
 using namespace std;
-using namespace __gnu_pbds;
-using ll = long long;
 
-void remove(int idx) {}
+void remove(int i) {}
 
-void add(int idx) {}
+void add(int i) {}
 
-ll get_answer() {}
+long long get_answer() {}
 
 const int block_size;
 
@@ -27,9 +20,9 @@ struct Query
     }
 };
 
-vector<ll> mo_s_algorithm(vector<Query> queries)
+vector<long long> mo_s_algorithm(vector<Query> queries)
 {
-    vector<ll> answers(queries.size());
+    vector<long long> answers(queries.size());
     sort(queries.begin(), queries.end());
 
     int cur_l = 0;

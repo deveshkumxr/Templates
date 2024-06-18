@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 
 using namespace std;
-using ll = long long;
 
 // 1--based
 template <class T>
@@ -9,9 +8,9 @@ class Merge
 {
 public:
     vector<vector<T>> st;
-    ll n;
+    int n;
 
-    Merge(ll n) : n(n)
+    Merge(int n) : n(n)
     {
         st.resize(4 * n + 4);
     }
@@ -22,7 +21,7 @@ public:
         buildUtil(1, 1, n, v);
     }
 
-    ll query(int l, int r, T q)
+    long long query(int l, int r, T q)
     {
         return queryUtil(1, 1, n, l + 1, r + 1, q);
     }
@@ -44,7 +43,7 @@ private:
     }
 
     // change this
-    ll queryUtil(int si, int ss, int se, int l, int r, T q)
+    long long queryUtil(int si, int ss, int se, int l, int r, T q)
     {
         if (ss > r || se < l)
         {

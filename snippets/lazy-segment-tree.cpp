@@ -1,9 +1,6 @@
-#include <iostream>
 #include <bits/stdc++.h>
 
 using namespace std;
-using ll = long long;
-
 
 template <class T, class U>
 // T -> node, U->update
@@ -12,11 +9,11 @@ class Seg
 public:
     vector<T> st;
     vector<U> lazy;
-    ll n;
+    long long n;
     T identity_element; // I such that combine(x,I) = x
     U identity_update;  // I such that apply(x,I) = x
 
-    Seg(ll n, T identity_element, U identity_update)
+    Seg(long long n, T identity_element, U identity_update)
     {
         this->n = n;
         this->identity_element = identity_element;
@@ -32,29 +29,29 @@ public:
         return ans;
     }
 
-    void buildUtil(ll v, ll tl, ll tr, vector<T> &a)
+    void buildUtil(long long v, long long tl, long long tr, vector<T> &a)
     {
         if (tl == tr)
         {
             st[v] = a[tl];
             return;
         }
-        ll tm = (tl + tr) >> 1;
+        long long tm = (tl + tr) >> 1;
         buildUtil(2 * v + 1, tl, tm, a);
         buildUtil(2 * v + 2, tm + 1, tr, a);
         st[v] = combine(st[2 * v + 1], st[2 * v + 2]);
     }
 
-    // change the following 2 functions
+    // change the folong longowing 2 functions
 
-    T apply(T curr, U upd, ll tl, ll tr)
+    T apply(T curr, U upd, long long tl, long long tr)
     {
         // current state and new update in [tl, tr]
         T ans = upd;
         return ans;
     }
 
-    U combineUpdate(U old_upd, U new_upd, ll tl, ll tr)
+    U combineUpdate(U old_upd, U new_upd, long long tl, long long tr)
     {
         // combining old and new updates
         U ans = old_upd;
@@ -62,21 +59,21 @@ public:
         return ans;
     }
 
-    void push_down(ll v, ll tl, ll tr)
+    void push_down(long long v, long long tl, long long tr)
     {
         if (lazy[v] == identity_update)
             return;
         st[v] = apply(st[v], lazy[v], tl, tr);
         if (2 * v + 2 < 4 * n)
         {
-            ll tm = (tl + tr) >> 1;
+            long long tm = (tl + tr) >> 1;
             lazy[2 * v + 1] = combineUpdate(lazy[2 * v + 1], lazy[v], tl, tm);
             lazy[2 * v + 2] = combineUpdate(lazy[2 * v + 2], lazy[v], tm + 1, tr);
         }
         lazy[v] = identity_update;
     }
 
-    T queryUtil(ll v, ll tl, ll tr, ll l, ll r)
+    T queryUtil(long long v, long long tl, long long tr, long long l, long long r)
     {
         push_down(v, tl, tr);
         if (l > r)
@@ -89,11 +86,11 @@ public:
         {
             return st[v];
         }
-        ll tm = (tl + tr) >> 1;
+        long long tm = (tl + tr) >> 1;
         return combine(queryUtil(2 * v + 1, tl, tm, l, r), queryUtil(2 * v + 2, tm + 1, tr, l, r));
     }
 
-    void updateUtil(ll v, ll tl, ll tr, ll l, ll r, U upd)
+    void updateUtil(long long v, long long tl, long long tr, long long l, long long r, U upd)
     {
         push_down(v, tl, tr);
         if (tr < l or tl > r)
@@ -105,7 +102,7 @@ public:
         }
         else
         {
-            ll tm = (tl + tr) >> 1;
+            long long tm = (tl + tr) >> 1;
             updateUtil(2 * v + 1, tl, tm, l, r, upd);
             updateUtil(2 * v + 2, tm + 1, tr, l, r, upd);
             st[v] = combine(st[2 * v + 1], st[2 * v + 2]);
@@ -118,12 +115,12 @@ public:
         buildUtil(0, 0, n - 1, a);
     }
 
-    T query(ll l, ll r)
+    T query(long long l, long long r)
     {
         return queryUtil(0, 0, n - 1, l, r);
     }
 
-    void update(ll l, ll r, U upd)
+    void update(long long l, long long r, U upd)
     {
         updateUtil(0, 0, n - 1, l, r, upd);
     }

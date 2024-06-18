@@ -16,8 +16,7 @@ public:
 
     int find(int i)
     {
-        if (par[i] == i)
-            return i;
+        if (par[i] == i) return i;
         return par[i] = find(par[i]);
     }
 
@@ -28,10 +27,8 @@ public:
 
     void unite(int u, int v)
     {
-        if (same(u, v))
-            return;
-        if (set_size(u) < set_size(v))
-            swap(u, v);
+        if (same(u, v)) return;
+        if (set_size(u) < set_size(v)) swap(u, v);
         u = find(u), v = find(v);
         par[v] = u, size[u] += size[v];
     }
