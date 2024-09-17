@@ -1,40 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-class DSU
-{
-public:
+struct DSU {
+    vector<int> siz, par;
+    int comps;
 
-    vector<int> size, par;
-
-    DSU(int n)
-    {
+    DSU(int n) {
         par.resize(n + 1);
-        size.resize(n + 1, 1);
+        siz.assign(n + 1, 1);
         iota(par.begin(), par.end(), 0);
+        comps = n;
     }
 
-    int find(int i)
-    {
+    int find(int i) {
         if (par[i] == i) return i;
         return par[i] = find(par[i]);
     }
 
-    int set_size(int i)
-    {
-        return size[find(i)];
-    }
-
-    void unite(int u, int v)
-    {
+    void join(int u, int v) {
         if (same(u, v)) return;
-        if (set_size(u) < set_size(v)) swap(u, v);
-        u = find(u), v = find(v);
-        par[v] = u, size[u] += size[v];
+        if (size(u) < size(v)) swap(u, v);
+        u = find(u), v = find(v), comps--;
+        par[v] = u, siz[u] += siz[v];
     }
 
-    bool same(int u, int v)
-    {
+    int size(int i) {
+        return siz[find(i)];
+    }
+
+    bool same(int u, int v) {
         return find(u) == find(v);
     }
 };

@@ -16,51 +16,40 @@ mt19937 gen(chrono::steady_clock::now().time_since_epoch().count());
 const long long base = gen() % N + 32;
 
 // string hashing
-struct Hashing
-{
+struct Hashing {
     string s;
     int n;
     int primes;
     vector<long long> hash_primes = {1000000009, 100000007};
-    vector<vector<long long>> hash_values;
-    vector<vector<long long>> power_of_base;
-    vector<vector<long long>> inverse_power_of_base;
+    vector<vector<long long>> hash_values, power_of_base, inverse_power_of_base;
 
-    Hashing(string a)
-    {
+    Hashing(string a) {
         primes = hash_primes.size();
         hash_values.resize(primes);
         power_of_base.resize(primes);
         inverse_power_of_base.resize(primes);
         s = a;
         n = s.length();
-        for (int i = 0; i < (int) hash_primes.size(); i++)
-        {
+        for (int i = 0; i < (int)hash_primes.size(); i++) {
             power_of_base[i].resize(n + 1);
             inverse_power_of_base[i].resize(n + 1);
             power_of_base[i][0] = 1;
-            for (int j = 1; j <= n; j++)
-                power_of_base[i][j] = (base * power_of_base[i][j - 1]) % hash_primes[i];
+            for (int j = 1; j <= n; j++) power_of_base[i][j] = (base * power_of_base[i][j - 1]) % hash_primes[i];
             inverse_power_of_base[i][n] = inv(power_of_base[i][n], hash_primes[i]);
-            for (int j = n - 1; j >= 0; j--)
-                inverse_power_of_base[i][j] = mul(inverse_power_of_base[i][j + 1], base, hash_primes[i]);
+            for (int j = n - 1; j >= 0; j--) inverse_power_of_base[i][j] = mul(inverse_power_of_base[i][j + 1], base, hash_primes[i]);
         }
-        for (int i = 0; i < (int) hash_primes.size(); i++)
-        {
+        for (int i = 0; i < (int)hash_primes.size(); i++) {
             hash_values[i].resize(n);
-            for (int j = 0; j < n; j++)
-            {
+            for (int j = 0; j < n; j++) {
                 hash_values[i][j] = ((s[j] - 'a' + 1LL) * power_of_base[i][j]) % hash_primes[i];
                 hash_values[i][j] = (hash_values[i][j] + (j > 0 ? hash_values[i][j - 1] : 0LL)) % hash_primes[i];
             }
         }
     }
 
-    vector<long long> substring_hash(int l, int r)
-    {
+    vector<long long> substring_hash(int l, int r) {
         vector<long long> hash(primes);
-        for (int i = 0; i < primes; i++)
-        {
+        for (int i = 0; i < primes; i++) {
             long long val1 = hash_values[i][r];
             long long val2 = l > 0 ? hash_values[i][l - 1] : 0LL;
             hash[i] = mul(sub(val1, val2, hash_primes[i]), inverse_power_of_base[i][l], hash_primes[i]);
@@ -70,18 +59,15 @@ struct Hashing
 };
 
 // unordered_map custom hash
-struct custom_hash
-{
-    static uint64_t splitmix64(uint64_t x)
-    {
+struct custom_hash {
+    static uint64_t splitmix64(uint64_t x) {
         x += 0x9e3779b97f4a7c15;
         x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
         x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
         return x ^ (x >> 31);
     }
 
-    size_t operator()(uint64_t x) const
-    {
+    size_t operator()(uint64_t x) const {
         static const uint64_t FIXED_RANDOM = chrono::steady_clock::now().time_since_epoch().count();
         return splitmix64(x + FIXED_RANDOM);
     }
